@@ -77,6 +77,7 @@ body {
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
   -webkit-app-region: drag;
+  user-select: none;
 }
 
 #tabs-container {
@@ -1034,6 +1035,23 @@ body {
 }
 
 #context-menu.hidden {
+  display: none;
+}
+
+/* Контекстное меню заголовка */
+#titlebar-context-menu {
+  position: fixed;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px var(--shadow-color);
+  z-index: 10001;
+  min-width: 180px;
+  padding: 6px 0;
+  animation: contextMenuFadeIn 0.1s ease;
+}
+
+#titlebar-context-menu.hidden {
   display: none;
 }
 

@@ -344,6 +344,11 @@ ipcMain.on('window-close', (event) => {
   if (win) win.close();
 });
 
+ipcMain.on('is-window-maximized', (event) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  event.returnValue = win ? win.isMaximized() : false;
+});
+
 ipcMain.handle('open-incognito', () => {
   if (!incognitoWindow || incognitoWindow.isDestroyed()) {
     incognitoWindow = createMainWindow(true);

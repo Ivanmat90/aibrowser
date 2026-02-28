@@ -1047,10 +1047,18 @@ function setupEventListeners() {
     if (!e.target.closest('#main-menu') && !e.target.closest('#menu-btn')) {
       mainMenu.classList.add('hidden');
     }
+    // Закрываем контекстное меню заголовка
+    const tbMenu = document.getElementById('titlebar-context-menu');
+    if (tbMenu && !e.target.closest('#titlebar-context-menu')) {
+      tbMenu.classList.add('hidden');
+    }
   });
   
   // Контекстное меню
   setupContextMenu();
+  
+  // Контекстное меню заголовка окна
+  setupTitlebarContextMenu();
 }
 
 // ============================================
@@ -1067,6 +1075,83 @@ function setupContextMenu() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       contextMenu.classList.add('hidden');
+    }
+  });
+}
+
+// ============================================
+// Контекстное меню заголовка окна
+// ============================================
+function setupTitlebarContextMenu() {
+  const titlebar = document.getElementById('titlebar');
+  const tbMenu = document.getElementById('titlebar-context-menu');
+  
+  if (!titlebar || !tbMenu) return;
+  
+  // Показываем меню при ПКМ на пустом месте заголовка
+  titlebar.addEventListener('contextmenu', (e) => {
+    // Проверяем, что клик не по кнопкам управления окном
+    if (e.target.closest('#window-controls') || e.target.closest('.tab') || e.target.closest('#new-tab-btn')) {
+      return;
+    }
+    
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Определяем состояние окна для показа правильных пунктов
+    const isMaximized = ipcRenderer.sendSync('is-window-maximized');
+    
+    // Обновляем видимость пунктов меню
+    const restoreItem = document.getElementById('tb-restore');
+    const maximizeItem = document.getElementById('tb-maximize');
+    
+    if (isMaximized) {
+      restoreItem.classList.remove('hidden');
+      maximizeItem.classList.add('hidden');
+    } else {
+      restoreItem.classList.add('hidden');
+      maximizeItem.classList.remove('hidden');
+    }
+    
+    // Позиционируем меню
+    const menuWidth = 180;
+    let posX = e.clientX;
+    let posY = e.clientY;
+    
+    if (posX + menuWidth > window.innerWidth) {
+      posX = window.innerWidth - menuWidth - 10;
+    }
+    
+    tbMenu.style.left = `${posX}px`;
+    tbMenu.style.top = `${posY}px`;
+    tbMenu.classList.remove('hidden');
+  });
+  
+  // Обработчики пунктов меню
+  document.getElementById('tb-restore').addEventListener('click', () => {
+    ipcRenderer.send('window-maximize');
+    tbMenu.classList.add('hidden');
+  });
+  
+  document.getElementById('tb-minimize').addEventListener('click', () => {
+    ipcRenderer.send('window-minimize');
+    tbMenu.classList.add('hidden');
+  });
+  
+  document.getElementById('tb-maximize').addEventListener('click', () => {
+    ipcRenderer.send('window-maximize');
+    tbMenu.classList.add('hidden');
+  });
+  
+  document.getElementById('tb-close').addEventListener('click', () => {
+    ipcRenderer.send('window-close');
+    tbMenu.classList.add('hidden');
+  });
+  
+  // Закрытие меню по Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      tbMenu.classList.add('hidden');
     }
   });
 }

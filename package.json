@@ -1,6 +1,6 @@
 {
   "name": "aibrowser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Современный браузер на Electron с тёмной темой и красными акцентами",
   "main": "main.js",
   "scripts": {
