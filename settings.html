@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Настройки - AIBrowser</title>
+  <style>
+    :root {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #252525;
+      --bg-tertiary: #333333;
+      --bg-hover: #3a3a3a;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --text-muted: #808080;
+      --accent-primary: #B22222;
+      --accent-hover: #8B0000;
+      --accent-light: #DC143C;
+      --border-color: #404040;
+      --success: #28a745;
+      --danger: #dc3545;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+    
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .header h1 {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    
+    .header h1 span {
+      color: var(--accent-primary);
+    }
+    
+    .close-btn {
+      width: 36px;
+      height: 36px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 24px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    
+    .close-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+    
+    .content {
+      padding: 24px;
+      max-height: calc(100vh - 80px);
+      overflow-y: auto;
+    }
+    
+    .section {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .setting-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+    
+    .setting-info h3 {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .setting-info p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    
+    /* Переключатель темы */
+    .theme-toggle {
+      display: flex;
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      padding: 4px;
+      gap: 4px;
+    }
+    
+    .theme-option {
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+    
+    .theme-option:hover {
+      color: var(--text-primary);
+    }
+    
+    .theme-option.active {
+      background: var(--accent-primary);
+      color: white;
+    }
+    
+    /* Радио кнопки */
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .radio-item:hover {
+      background: var(--bg-hover);
+    }
+    
+    .radio-item input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-primary);
+    }
+    
+    .radio-item label {
+      flex: 1;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    
+    /* Чекбоксы */
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+    }
+    
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-primary);
+    }
+    
+    .checkbox-item label {
+      cursor: pointer;
+      font-size: 13px;
+    }
+    
+    /* Кнопки действий */
+    .action-btn {
+      padding: 10px 20px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .action-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+    
+    .action-btn.danger {
+      background: rgba(220, 53, 69, 0.1);
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+    
+    .action-btn.danger:hover {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .action-btn.primary {
+      background: var(--accent-primary);
+      border-color: var(--accent-primary);
+      color: white;
+    }
+    
+    .action-btn.primary:hover {
+      background: var(--accent-hover);
+    }
+    
+    /* Путь к папке */
+    .path-display {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-family: monospace;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .path-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    /* Статистика */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    
+    .stat-item {
+      padding: 16px;
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent-primary);
+    }
+    
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+    
+    /* Нижняя панель */
+    .footer-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    /* Уведомление */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--success);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .notification.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    
+    .notification.error {
+      background: var(--danger);
+    }
+    
+    /* Скроллбар */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <!-- Шапка -->
+  <div class="header">
+    <h1>⚙️ <span>Настройки</span> AIBrowser</h1>
+    <button class="close-btn" id="closeBtn" title="Закрыть">×</button>
+  </div>
+  
+  <!-- Контент -->
+  <div class="content">
+    
+    <!-- Внешний вид -->
+    <div class="section">
+      <div class="section-title">🎨 Внешний вид</div>
+      
+      <div class="setting-item">
+        <div class="setting-info">
+          <h3>Тема оформления</h3>
+          <p>Выберите светлую или тёмную тему интерфейса</p>
+        </div>
+        <div class="theme-toggle">
+          <button class="theme-option" id="themeDark" data-theme="dark">🌙 Тёмная</button>
+          <button class="theme-option" id="themeLight" data-theme="light">☀️ Светлая</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Поиск -->
+    <div class="section">
+      <div class="section-title">🔍 Поиск</div>
+      
+      <div class="setting-item vertical">
+        <div class="setting-info">
+          <h3>Поисковая система по умолчанию</h3>
+          <p>Выберите поисковик для адресной строки</p>
+        </div>
+        <div class="radio-group">
+          <div class="radio-item">
+            <input type="radio" name="searchEngine" id="engineDuckDuckGo" value="duckduckgo">
+            <label for="engineDuckDuckGo">🦆 DuckDuckGo — приватный поиск</label>
+          </div>
+          <div class="radio-item">
+            <input type="radio" name="searchEngine" id="engineGoogle" value="google">
+            <label for="engineGoogle">🔍 Google — самый популярный</label>
+          </div>
+          <div class="radio-item">
+            <input type="radio" name="searchEngine" id="engineYandex" value="yandex">
+            <label for="engineYandex">🇷🇺 Яндекс — русскоязычный поиск</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Загрузки -->
+    <div class="section">
+      <div class="section-title">⬇️ Загрузки</div>
+      
+      <div class="setting-item vertical">
+        <div class="setting-info">
+          <h3>Папка для загрузок</h3>
+          <p>Выберите, куда сохранять скачанные файлы</p>
+        </div>
+        <div class="path-row">
+          <div class="path-display" id="downloadPath">C:\Users\Downloads</div>
+          <button class="action-btn primary" id="changePathBtn">Изменить</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Конфиденциальность -->
+    <div class="section">
+      <div class="section-title">🔒 Конфиденциальность</div>
+      
+      <div class="setting-item">
+        <div class="setting-info">
+          <h3>Сохранять историю посещений</h3>
+          <p>Записывать посещённые страницы для автодополнения</p>
+        </div>
+        <label class="checkbox-item" style="padding: 0; background: none;">
+          <input type="checkbox" id="saveHistory" checked>
+          <span></span>
+        </label>
+      </div>
+      
+      <div class="setting-item vertical" style="padding-top: 20px;">
+        <div class="setting-info">
+          <h3>Очистить данные просмотров</h3>
+          <p>Удалить выбранные данные из браузера</p>
+        </div>
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" id="clearHistory">
+            <span>История посещений</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="clearCookies">
+            <span>Файлы cookie и данные сайтов</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="clearCache">
+            <span>Кэш изображений и файлов</span>
+          </label>
+        </div>
+        <button class="action-btn danger full-width" id="clearDataBtn">🗑️ Очистить выбранные данные</button>
+      </div>
+    </div>
+    
+    <!-- Статистика -->
+    <div class="section">
+      <div class="section-title">📊 Статистика браузера</div>
+      
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-value" id="statBookmarks">0</div>
+          <div class="stat-label">Закладок</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="statHistory">0</div>
+          <div class="stat-label">Записей истории</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="statSessions">1</div>
+          <div class="stat-label">Активных сессий</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Сброс -->
+    <div class="section">
+      <div class="section-title">⚠️ Сброс настроек</div>
+      
+      <div class="setting-item vertical">
+        <div class="setting-info">
+          <h3>Вернуть настройки по умолчанию</h3>
+          <p>Все данные будут удалены безвозвратно. Это действие нельзя отменить.</p>
+        </div>
+        <button class="action-btn danger full-width" id="resetBtn">🔄 Сбросить всё к значениям по умолчанию</button>
+      </div>
+    </div>
+    
+    <!-- О программе -->
+    <div class="section">
+      <div class="section-title">ℹ️ О программе</div>
+      
+      <div class="about-section">
+        <div class="about-logo">🌐</div>
+        <div class="about-title"><span>AI</span>Browser</div>
+        <div class="about-version">Версия 1.0.0 (Сборка 2026.02)</div>
+        <div class="about-desc">
+          Современный браузер на базе Electron<br>
+          с тёмной темой и красными акцентами<br><br>
+          Разработан для Windows 10/11<br>
+          с поддержкой вкладок, закладок, истории<br>
+          и режима инкогнито
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  <!-- Уведомление -->
+  <div class="notification" id="notification">Настройки сохранены</div>
+  
+  <script src="settings.js"></script>
+</body>
+</html>

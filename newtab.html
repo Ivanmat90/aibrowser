@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Новая вкладка - AIBrowser</title>
+  <style>
+    :root {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #252525;
+      --bg-tertiary: #333333;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --text-muted: #808080;
+      --accent-primary: #B22222;
+      --accent-hover: #8B0000;
+      --border-color: #404040;
+      --shadow-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+    
+    .logo {
+      font-size: 72px;
+      margin-bottom: 10px;
+    }
+    
+    .title {
+      font-size: 32px;
+      font-weight: 300;
+      margin-bottom: 40px;
+      color: var(--text-primary);
+    }
+    
+    .title span {
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+    
+    .search-container {
+      width: 100%;
+      max-width: 600px;
+      position: relative;
+      margin-bottom: 50px;
+    }
+    
+    .search-box {
+      width: 100%;
+      height: 56px;
+      padding: 0 24px 0 56px;
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: 28px;
+      color: var(--text-primary);
+      font-size: 16px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    
+    .search-box:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 4px rgba(178, 34, 34, 0.2), 0 4px 20px var(--shadow-color);
+    }
+    
+    .search-box::placeholder {
+      color: var(--text-muted);
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: var(--text-muted);
+    }
+    
+    .shortcuts {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 800px;
+    }
+    
+    .shortcut {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 24px;
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 100px;
+      text-decoration: none;
+    }
+    
+    .shortcut:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 24px var(--shadow-color);
+      background: var(--bg-tertiary);
+    }
+    
+    .shortcut-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: white;
+    }
+    
+    .shortcut-title {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+    
+    .footer {
+      position: fixed;
+      bottom: 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    
+    .footer a {
+      color: var(--accent-primary);
+      text-decoration: none;
+    }
+    
+    /* Light theme support */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg-primary: #f5f5f5;
+        --bg-secondary: #ffffff;
+        --bg-tertiary: #e8e8e8;
+        --text-primary: #333333;
+        --text-secondary: #666666;
+        --text-muted: #999999;
+        --border-color: #cccccc;
+        --shadow-color: rgba(0, 0, 0, 0.15);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">🌐</div>
+  <h1 class="title"><span>AI</span>Browser</h1>
+  
+  <div class="search-container">
+    <span class="search-icon">🔍</span>
+    <input type="text" class="search-box" placeholder="Введите поисковый запрос или URL..." id="searchInput">
+  </div>
+  
+  <div class="shortcuts">
+    <a href="https://duckduckgo.com" class="shortcut">
+      <div class="shortcut-icon">🦆</div>
+      <span class="shortcut-title">DuckDuckGo</span>
+    </a>
+    <a href="https://google.com" class="shortcut">
+      <div class="shortcut-icon">G</div>
+      <span class="shortcut-title">Google</span>
+    </a>
+    <a href="https://yandex.ru" class="shortcut">
+      <div class="shortcut-icon">Я</div>
+      <span class="shortcut-title">Яндекс</span>
+    </a>
+    <a href="https://github.com" class="shortcut">
+      <div class="shortcut-icon">⚡</div>
+      <span class="shortcut-title">GitHub</span>
+    </a>
+    <a href="https://youtube.com" class="shortcut">
+      <div class="shortcut-icon">▶</div>
+      <span class="shortcut-title">YouTube</span>
+    </a>
+  </div>
+  
+  <div class="footer">
+    Поиск по умолчанию: <a href="#" id="searchEngine">DuckDuckGo</a>
+  </div>
+  
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const searchEngines = {
+      duckduckgo: { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=' },
+      google: { name: 'Google', url: 'https://www.google.com/search?q=' },
+      yandex: { name: 'Яндекс', url: 'https://yandex.ru/search/?text=' }
+    };
+    
+    // Загружаем настройки
+    let currentEngine = 'duckduckgo';
+    
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const query = searchInput.value.trim();
+        if (query) {
+          let url;
+          if (query.includes('.') && !query.includes(' ')) {
+            url = query.startsWith('http') ? query : 'https://' + query;
+          } else {
+            url = searchEngines[currentEngine].url + encodeURIComponent(query);
+          }
+          window.location.href = url;
+        }
+      }
+    });
+    
+    searchInput.focus();
+  </script>
+</body>
+</html>

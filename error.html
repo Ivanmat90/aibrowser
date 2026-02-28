@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ошибка загрузки - AIBrowser</title>
+  <style>
+    :root {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #252525;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --text-muted: #808080;
+      --accent-primary: #B22222;
+      --accent-hover: #8B0000;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+    }
+    
+    .error-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+    
+    .error-code {
+      font-size: 72px;
+      font-weight: 700;
+      color: var(--accent-primary);
+      margin-bottom: 10px;
+    }
+    
+    .error-title {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    
+    .error-message {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 30px;
+      max-width: 500px;
+    }
+    
+    .error-url {
+      background: var(--bg-secondary);
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      word-break: break-all;
+      max-width: 600px;
+    }
+    
+    .actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      background: var(--accent-primary);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    
+    .btn:hover {
+      background: var(--accent-hover);
+    }
+    
+    .btn-secondary {
+      background: var(--bg-secondary);
+      border: 1px solid #404040;
+    }
+    
+    .btn-secondary:hover {
+      background: #333;
+    }
+    
+    .suggestions {
+      margin-top: 40px;
+      text-align: left;
+      max-width: 500px;
+    }
+    
+    .suggestions h3 {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .suggestions ul {
+      list-style: none;
+    }
+    
+    .suggestions li {
+      padding: 8px 0;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    
+    .suggestions li:before {
+      content: "• ";
+      color: var(--accent-primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="error-icon">⚠️</div>
+  <div class="error-code" id="errorCode">-</div>
+  <h1 class="error-title">Не удалось загрузить страницу</h1>
+  <p class="error-message" id="errorMessage">
+    Произошла ошибка при попытке загрузить запрашиваемую страницу.
+  </p>
+  <div class="error-url" id="errorUrl">-</div>
+  
+  <div class="actions">
+    <button class="btn" onclick="retry()">🔄 Повторить</button>
+    <button class="btn btn-secondary" onclick="goBack()">← Назад</button>
+    <a href="newtab.html" class="btn btn-secondary">⌂ На главную</a>
+  </div>
+  
+  <div class="suggestions">
+    <h3>Возможные причины:</h3>
+    <ul>
+      <li>Отсутствует подключение к интернету</li>
+      <li>Сайт временно недоступен</li>
+      <li>Неправильно введён адрес (URL)</li>
+      <li>Сайт заблокирован или не существует</li>
+      <li>Проблемы с DNS или прокси-сервером</li>
+    </ul>
+  </div>
+  
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const url = params.get('url') || 'Неизвестно';
+    const code = params.get('code') || '-6';
+    
+    document.getElementById('errorUrl').textContent = decodeURIComponent(url);
+    document.getElementById('errorCode').textContent = code;
+    
+    const errorMessages = {
+      '-2': 'Время ожидания соединения истекло',
+      '-3': 'Загрузка прервана',
+      '-6': 'Не удалось подключиться к серверу',
+      '-7': 'Соединение сброшено',
+      '-8': 'Соединение закрыто',
+      '-9': 'Соединение отклонено',
+      '-10': 'Соединение сброшено',
+      '-105': 'Не удается разрешить имя сервера (DNS)',
+      '-106': 'Подключение к интернету отсутствует',
+      '-107': 'SSL-сертификат недействителен',
+      '-108': 'Соединение закрыто неожиданно',
+      '-109': 'Слишком много перенаправлений',
+      '-110': 'Неправильный ответ сервера',
+      '-111': 'Сертификат требуется',
+      '-112': 'Сертификат отклонён',
+      '-113': 'SSL-протокол не поддерживается',
+      '-116': 'Соединение истекло',
+      '-117': 'Неправильный ответ сервера',
+      '-118': 'Время ожидания соединения истекло',
+      '-200': 'Кэшированная копия недоступна',
+      '-300': 'Неверный URL-адрес',
+      '-301': 'Слишком длинный URL-адрес',
+      '-302': 'Неизвестная схема URL',
+      '-303': 'Неправильный URI',
+      '-310': 'Слишком много перенаправлений',
+      '-311': 'Неправильная обработка перенаправления',
+      '-312': 'Неправильная обработка перенаправления',
+      '-320': 'Ошибка сети',
+      '-321': 'Файл не найден',
+      '-322': 'Слишком много открытых файлов',
+      '-323': 'Доступ запрещён'
+    };
+    
+    const message = errorMessages[code] || `Произошла неизвестная ошибка (код ${code})`;
+    document.getElementById('errorMessage').textContent = message;
+    
+    function retry() {
+      window.location.href = decodeURIComponent(url);
+    }
+    
+    function goBack() {
+      history.back();
+    }
+  </script>
+</body>
+</html>

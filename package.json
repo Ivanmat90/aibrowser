@@ -1,0 +1,51 @@
+{
+  "name": "aibrowser",
+  "version": "1.0.0",
+  "description": "Современный браузер на Electron с тёмной темой и красными акцентами",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build-win": "electron-builder --win",
+    "build-portable": "electron-builder --win portable",
+    "build-zip": "electron-builder --win zip",
+    "package": "electron-packager . AIBrowser --platform=win32 --arch=x64 --out=dist --overwrite --icon=assets/icon.png --asar --prune"
+  },
+  "keywords": [
+    "browser",
+    "electron",
+    "dark-theme"
+  ],
+  "author": "AI Browser Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "electron-packager": "^17.1.2"
+  },
+  "build": {
+    "appId": "com.aibrowser.app",
+    "productName": "AIBrowser",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "renderer.js",
+      "style.css",
+      "settings.html",
+      "settings.js",
+      "newtab.html",
+      "error.html",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": [
+        "zip",
+        "portable"
+      ],
+      "icon": "assets/icon.png"
+    }
+  }
+}

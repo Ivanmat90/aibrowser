@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIBrowser</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  <!-- Верхняя панель с вкладками -->
+  <div id="titlebar">
+    <div id="tabs-container">
+      <div id="tabs"></div>
+      <button id="new-tab-btn" title="Новая вкладка (Ctrl+T)">+</button>
+    </div>
+    <div id="window-controls">
+      <button id="minimize-btn" title="Свернуть">−</button>
+      <button id="maximize-btn" title="Развернуть">□</button>
+      <button id="close-btn" title="Закрыть">×</button>
+    </div>
+  </div>
+
+  <!-- Панель навигации -->
+  <div id="navbar">
+    <div id="nav-buttons">
+      <button id="back-btn" title="Назад">←</button>
+      <button id="forward-btn" title="Вперёд">→</button>
+      <button id="refresh-btn" title="Обновить">↻</button>
+      <button id="home-btn" title="Домой">⌂</button>
+    </div>
+    
+    <div id="address-bar-container">
+      <div id="security-indicator">🔒</div>
+      <input type="text" id="address-bar" placeholder="Введите адрес или поисковый запрос..." autocomplete="off">
+      <div id="autocomplete-dropdown"></div>
+    </div>
+    
+    <div id="nav-actions">
+      <button id="bookmark-btn" title="Добавить в закладки">☆</button>
+      <button id="downloads-btn" title="Загрузки">
+        ⬇
+        <span id="download-badge" class="hidden">0</span>
+      </button>
+      <button id="history-btn" title="История (Ctrl+H)">🕐</button>
+      <button id="incognito-btn" title="Новое окно инкогнито (Ctrl+Shift+N)">👤</button>
+      <button id="menu-btn" title="Меню">⋮</button>
+    </div>
+  </div>
+
+  <!-- Панель закладок -->
+  <div id="bookmarks-bar">
+    <div id="bookmarks-list"></div>
+    <button id="add-bookmark-quick" title="Добавить закладку">+</button>
+  </div>
+
+  <!-- Контейнер вкладок -->
+  <div id="webview-container"></div>
+
+  <!-- Статусная строка -->
+  <div id="status-bar">
+    <span id="status-text">Готово</span>
+    <div id="status-right">
+      <span id="loading-indicator"></span>
+      <span id="zoom-level">100%</span>
+    </div>
+  </div>
+
+  <!-- Панель загрузок -->
+  <div id="downloads-panel" class="hidden">
+    <div id="downloads-header">
+      <h3>Загрузки</h3>
+      <button id="close-downloads">×</button>
+    </div>
+    <div id="downloads-list"></div>
+    <div id="downloads-footer">
+      <button id="clear-downloads">Очистить список</button>
+      <button id="open-downloads-folder">Открыть папку</button>
+    </div>
+  </div>
+
+  <!-- Панель истории -->
+  <div id="history-panel" class="hidden">
+    <div id="history-header">
+      <h3>История</h3>
+      <button id="close-history">×</button>
+    </div>
+    <div id="history-toolbar">
+      <input type="text" id="history-search" placeholder="Поиск в истории...">
+      <button id="clear-all-history">Очистить историю</button>
+    </div>
+    <div id="history-list"></div>
+  </div>
+
+  <!-- Меню -->
+  <div id="main-menu" class="hidden">
+    <div class="menu-item" id="menu-new-tab">Новая вкладка <span class="shortcut">Ctrl+T</span></div>
+    <div class="menu-item" id="menu-new-incognito">Новое окно инкогнито <span class="shortcut">Ctrl+Shift+N</span></div>
+    <div class="menu-separator"></div>
+    <div class="menu-item" id="menu-bookmarks">Закладки <span class="shortcut">Ctrl+B</span></div>
+    <div class="menu-item" id="menu-history">История <span class="shortcut">Ctrl+H</span></div>
+    <div class="menu-item" id="menu-downloads">Загрузки</div>
+    <div class="menu-separator"></div>
+    <div class="menu-item" id="menu-zoom-in">Увеличить</div>
+    <div class="menu-item" id="menu-zoom-out">Уменьшить</div>
+    <div class="menu-item" id="menu-zoom-reset">Сбросить масштаб</div>
+    <div class="menu-separator"></div>
+    <div class="menu-item" id="menu-settings">Настройки</div>
+    <div class="menu-item" id="menu-about">О программе</div>
+  </div>
+
+  <!-- Диалог добавления закладки -->
+  <div id="bookmark-dialog" class="modal hidden">
+    <div class="modal-content">
+      <h3>Добавить закладку</h3>
+      <label>Название:</label>
+      <input type="text" id="bookmark-title">
+      <label>URL:</label>
+      <input type="text" id="bookmark-url">
+      <div class="modal-buttons">
+        <button id="bookmark-cancel">Отмена</button>
+        <button id="bookmark-save">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Диалог подтверждения -->
+  <div id="confirm-dialog" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="confirm-title">Подтверждение</h3>
+      <p id="confirm-message">Вы уверены?</p>
+      <div class="modal-buttons">
+        <button id="confirm-no">Нет</button>
+        <button id="confirm-yes">Да</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Контекстное меню -->
+  <div id="context-menu" class="hidden">
+    <div id="context-menu-items"></div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
